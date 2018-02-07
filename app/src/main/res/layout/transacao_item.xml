@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="10dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/transacao_icone"
+            android:layout_width="39dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/icone_transacao_item_despesa" />
+
+        <TextView
+            android:id="@+id/transacao_categoria"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/transacao_data"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="quinzecaracteres.." />
+
+        <TextView
+            android:id="@+id/transacao_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toEndOf="@+id/transacao_icone"
+            app:layout_constraintTop_toBottomOf="@+id/transacao_categoria"
+            tools:text="10/10/2010" />
+
+
+        <TextView
+            android:id="@+id/transacao_valor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="right|bottom"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/transacao_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/transacao_data"
+            tools:text="R$ 100,00" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

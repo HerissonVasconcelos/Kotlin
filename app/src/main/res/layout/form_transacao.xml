@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutValor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/form_transacao_valor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/valor"
+            android:inputType="numberDecimal" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayoutValor"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayoutValor"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutValor">
+
+        <EditText
+            android:id="@+id/form_transacao_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="@string/data"
+            android:inputType="none"
+            tools:text="11/20/2014" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/categoria"
+        android:textColor="#7b7b7b"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayoutData"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayoutData"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutData" />
+
+    <Spinner
+        android:id="@+id/form_transacao_categoria"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+</android.support.constraint.ConstraintLayout>
