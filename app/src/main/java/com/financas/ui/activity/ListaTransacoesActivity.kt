@@ -7,13 +7,11 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import com.condo.finanask.extension.ConvertToCalendar
 import com.financas.App
 import com.financas.R
 import com.financas.dao.TransacaoDAO
 import com.financas.data.room.TransacaoEntity
 import com.financas.model.Tipo
-import com.financas.model.Transacao
 import com.financas.ui.ResumoView
 import com.financas.ui.adapter.ListaTransacoesAdapter
 import com.financas.ui.dialog.AdicionaTransacaoDialog
@@ -32,6 +30,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private val dao = TransacaoDAO()
     private var transacoes = dao.transacoes
+
     val transacaoViewModel = App.injectTransacaoViewModel()
     val subscriptions = CompositeDisposable()
 
@@ -57,7 +56,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Timber.d("Received UIModel with ${it.transacoes.size} users.")
+                    Timber.d("Received UIModel with ${it.transacoes.size}.")
                     showTransacoes(it)
                 }, {
                     Timber.w(it)
@@ -65,18 +64,18 @@ class ListaTransacoesActivity : AppCompatActivity() {
                 }))
     }
 
-    private fun transform(transacoes: List<TransacaoEntity>): List<Transacao> {
-        val transacaoList = ArrayList<Transacao>()
-        transacoes.forEach {
-            val tipo = if(it.tipo == "Receita") Tipo.RECEITA else Tipo.DESPESA
-            transacaoList.add(Transacao(it.valor.toBigDecimal(),tipo , it.categoria, it.data.ConvertToCalendar()))
-        }
-        return transacaoList
-    }
+//    private fun transform(transacoes: List<TransacaoEntity>): List<TransacaoEntity> {
+//        val transacaoList = ArrayList<TransacaoEntity>()
+//        transacoes.forEach {
+//            transacaoList.add(Transacao(it.valor.ConvertToBigDecimal(),it.tipo.ConvetToEnumTipo() , it.categoria, it.data.ConvertToCalendar()))
+//        }
+//        return transacaoList
+//    }
 
     fun showTransacoes(data: TransacaoList) {
         if (data.error == null) {
-            transacoes = transform(data.transacoes)
+            transacoes = data.transacoes
+            atualizaTransacoes()
         } else if (data.error is ConnectException) {
             Timber.d("Sem conexão.")
         } else {
@@ -85,7 +84,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     fun showError() {
-        Toast.makeText(this, "Erro!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Erro ao carregar as transações!", Toast.LENGTH_SHORT).show()
     }
 
     private fun configuraFab() {
@@ -99,8 +98,8 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun adcionaDialog(tipo: Tipo) {
-        AdicionaTransacaoDialog(window.decorView as ViewGroup, this).configuraDialog(tipo, {
-            dao.adiciona(it)
+        AdicionaTransacaoDialog(window.decorView as ViewGroup, this).configuraDialog( 0, tipo, {
+            transacaoViewModel.insertTransacao(TransacaoEntity(0, it.valor, it.tipo.toString(), it.categoria, it.data))
             atualizaTransacoes()
             lista_transacoes_adiciona_menu.close(true)
         })
@@ -112,7 +111,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
             setOnItemClickListener { parent, view, position, id ->
                 val transacao = transacoes[position]
                 AlteraTransacaoDialog(window.decorView as ViewGroup, this@ListaTransacoesActivity).configuraDialog(transacao, {
-                    dao.altera(it, position)
+                    transacaoViewModel.updateTransacao(TransacaoEntity(idTransacao = it.idTransacao, valor = it.valor, tipo = it.tipo.toString(), categoria = it.categoria, data = it.data))
                     atualizaTransacoes()
                     lista_transacoes_adiciona_menu.close(true)
                 })
@@ -130,7 +129,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
             val adapterMenuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
             val position = adapterMenuInfo.position
 
-            dao.remove(position)
+            transacaoViewModel.deleteTransacao(transacoes[position])
             atualizaTransacoes()
 
         }

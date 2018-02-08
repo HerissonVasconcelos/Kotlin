@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.condo.finanask.extension.ConvertToBigDecimal
 import com.condo.finanask.extension.ConvertToCalendar
 import com.condo.finanask.extension.formataData
+import com.condo.finanask.extension.formataMoeda
 import com.financas.R
+import com.financas.data.room.TransacaoEntity
 import com.financas.delegate.TransacaoDelegate
 import com.financas.model.Tipo
 import com.financas.model.Transacao
@@ -28,29 +31,29 @@ abstract class FormularioTransacaoDialog(private val viewGroup: ViewGroup, priva
 
     protected val campoData = viewAdicionaReceita.form_transacao_data
 
-    fun configuraDialog(tipo: Tipo, delagate: (transacao: Transacao) -> Unit) {
+    fun configuraDialog(idTransacao: Long,tipo: Tipo, delagate: (transacao: TransacaoEntity) -> Unit) {
 
         configuraCampoData()
 
         configuraCampoCategoria(tipo)
 
-        configuraForm(tipo, delagate)
+        configuraForm(idTransacao, tipo, delagate)
     }
 
-    private fun configuraForm(tipo: Tipo, delagate: (transacao: Transacao) -> Unit) {
+    private fun configuraForm(id : Long, tipo: Tipo, delagate: (transacao: TransacaoEntity) -> Unit) {
 
         val titulo = tituloPor(tipo)
         AlertDialog.Builder(context).setTitle(titulo)
                 .setView(viewAdicionaReceita)
                 .setPositiveButton(tituloBotao, DialogInterface.OnClickListener { _, _ ->
 
-                    var valor = convertCampoValor(campoValor.text.toString())
+                    var valor = campoValor.text.toString().ConvertToBigDecimal()
 
                     val data = campoData.text.toString().ConvertToCalendar()
 
                     val categoria = campoCategoria.selectedItem.toString()
 
-                    delagate(Transacao(tipo = tipo, valor = valor, data = data, categoria = categoria))
+                    delagate(TransacaoEntity(idTransacao = id,tipo = tipo.toString(), valor = valor.formataMoeda(), data = data.formataData(), categoria = categoria))
 
                 })
                 .setNegativeButton("Cancelar", null)

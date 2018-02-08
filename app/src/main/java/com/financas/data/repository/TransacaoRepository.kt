@@ -28,17 +28,43 @@ class TransacaoRepository(val transacaoApi: TransacaoApi, val transacaoDao: Tran
         return transacaoApi.getTransacoes()
                 .doOnNext {
                     Timber.d("Dispatching ${it.size} from API...")
-                    storeUsersInDb(it)
+                    storeTransacaoInDb(it)
                 }
     }
 
-    fun storeUsersInDb(transacoes: List<TransacaoEntity>) {
+    fun storeTransacaoInDb(transacoes: List<TransacaoEntity>) {
         Observable.fromCallable { transacaoDao.insertAll(transacoes) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Timber.d("Inserted ${transacoes.size} users from API in DB...")
+                    Timber.d("Inserted ${transacoes.size} transactions from API in DB...")
                 }
     }
 
+    fun insertTransacaoDB(transacaoEntity: TransacaoEntity){
+        Observable.fromCallable { transacaoDao.insertTransacao(transacaoEntity) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Timber.d("Inserted in DB...")
+                }
+    }
+
+    fun updateTransacaoDB(transacaoEntity: TransacaoEntity){
+        Observable.fromCallable { transacaoDao.updateTransacao(transacaoEntity) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Timber.d("Update in DB...")
+                }
+    }
+
+    fun deleteTransacaoDB(transacaoEntity: TransacaoEntity){
+        Observable.fromCallable { transacaoDao.deleteTransacao(transacaoEntity) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Timber.d("Update in DB...")
+                }
+    }
 }

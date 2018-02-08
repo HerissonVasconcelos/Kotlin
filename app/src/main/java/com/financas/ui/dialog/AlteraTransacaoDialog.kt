@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.condo.finanask.extension.ConvertToCalendar
+import com.condo.finanask.extension.ConvetToEnumTipo
 import com.condo.finanask.extension.formataData
 import com.financas.R
+import com.financas.data.room.TransacaoEntity
 import com.financas.delegate.TransacaoDelegate
 import com.financas.model.Tipo
 import com.financas.model.Transacao
@@ -25,14 +27,14 @@ class AlteraTransacaoDialog(val viewGroup: ViewGroup, val context: Context) : Fo
     override val tituloBotao: String
         get() = "Alterar"
 
-    fun configuraDialog(transacao: Transacao, delagate: (transacao: Transacao) -> Unit) {
+    fun configuraDialog(transacao: TransacaoEntity, delagate: (transacao: TransacaoEntity) -> Unit) {
 
-        super.configuraDialog(transacao.tipo, delagate)
+        super.configuraDialog(transacao.idTransacao,transacao.tipo.ConvetToEnumTipo(), delagate)
 
-        campoValor.setText(transacao.valor.toString())
-        campoData.setText(transacao.data.formataData())
+        campoValor.setText(transacao.valor)
+        campoData.setText(transacao.data)
 
-        val categoryArray = context.resources.getStringArray(categoriaPor(transacao.tipo))
+        val categoryArray = context.resources.getStringArray(categoriaPor(transacao.tipo.ConvetToEnumTipo()))
         campoCategoria.setSelection(categoryArray.indexOf(transacao.categoria))
     }
 

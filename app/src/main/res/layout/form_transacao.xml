@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/valor"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:text="R$ 0,00"/>
 
     </android.support.design.widget.TextInputLayout>
 

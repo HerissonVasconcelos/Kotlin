@@ -1,20 +1,20 @@
 package com.financas.dao
 
-import com.financas.model.Transacao
+import com.financas.data.room.TransacaoEntity
 
 class TransacaoDAO {
 
-    val transacoes: List<Transacao> = Companion.transacoes
+    val transacoes: List<TransacaoEntity> = Companion.transacoes
 
     companion object {
-       private val transacoes: MutableList<Transacao> = mutableListOf()
+       private val transacoes: MutableList<TransacaoEntity> = mutableListOf()
     }
 
-    fun adiciona(transacao: Transacao){
+    fun adiciona(transacao: TransacaoEntity){
         Companion.transacoes.add(transacao)
     }
 
-    fun altera(transacao: Transacao, posicao: Int){
+    fun altera(transacao: TransacaoEntity, posicao: Int){
         Companion.transacoes[posicao] = transacao
     }
 

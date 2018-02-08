@@ -1,8 +1,10 @@
 package com.financas.model
 
+import com.condo.finanask.extension.ConvertToBigDecimal
+import com.financas.data.room.TransacaoEntity
 import java.math.BigDecimal
 
-class Resumo(val transacoes: List<Transacao>) {
+class Resumo(val transacoes: List<TransacaoEntity>) {
 
     val totalReceita get() = somaPor(Tipo.RECEITA)
 
@@ -12,8 +14,8 @@ class Resumo(val transacoes: List<Transacao>) {
 
     private fun somaPor(tipo: Tipo): BigDecimal {
         val somaTransacoesPeloTipo = transacoes
-                .filter {it.tipo == tipo}
-                .sumByDouble { it.valor.toDouble() }
+                .filter {it.tipo == tipo.toString()}
+                .sumByDouble { it.valor.ConvertToBigDecimal().toDouble() }
         return BigDecimal(somaTransacoesPeloTipo)
     }
 }

@@ -18,13 +18,13 @@ class App : Application() {
         private lateinit var transacaoApi: TransacaoApi
         private lateinit var transacaoRepository: TransacaoRepository
         private lateinit var transacaoViewModel: TransacaoViewModel
-        var appDatabase: AppDatabase? = null
+        private lateinit var appDatabase: AppDatabase
 
         fun injectTransacaoApi() = transacaoApi
 
         fun injectTransacaoViewModel() = transacaoViewModel
 
-        //fun injectTransacaoDao() = appDatabase?.transacaoDao()
+        fun injectTransacaoDao() = appDatabase.transacaoDao()
     }
 
     override fun onCreate() {
@@ -40,12 +40,10 @@ class App : Application() {
 
         transacaoApi = retrofit.create(TransacaoApi::class.java)
 
-//        AppDatabase.getInstance(this)
-
         appDatabase = Room.databaseBuilder(applicationContext,
                 AppDatabase::class.java, "financas").build()
 
-        //transacaoRepository = TransacaoRepository(transacaoApi, appDatabase.transacaoDao())
+        transacaoRepository = TransacaoRepository(transacaoApi, appDatabase.transacaoDao())
         transacaoViewModel = TransacaoViewModel(transacaoRepository)
     }
 }

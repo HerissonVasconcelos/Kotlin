@@ -1,8 +1,8 @@
 package com.financas.delegate
 
-import com.financas.model.Transacao
+import com.financas.data.room.TransacaoEntity
 
 interface TransacaoDelegate {
 
-    fun delegate(transacao: Transacao)
+    fun delegate(transacao: TransacaoEntity)
 }

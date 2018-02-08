@@ -10,12 +10,13 @@ import com.condo.finanask.extension.formataData
 import com.condo.finanask.extension.formataMoeda
 import com.condo.finanask.extension.limitaEmAte
 import com.financas.R
+import com.financas.data.room.TransacaoEntity
 import com.financas.model.Tipo
 import com.financas.model.Transacao
 import kotlinx.android.synthetic.main.transacao_item.view.*
 
 
-class ListaTransacoesAdapter(val transacoes: List<Transacao>,
+class ListaTransacoesAdapter(val transacoes: List<TransacaoEntity>,
                              val context: Context) : BaseAdapter() {
 
     private val limiteCharCategoria = 20
@@ -23,7 +24,7 @@ class ListaTransacoesAdapter(val transacoes: List<Transacao>,
     override fun getView(posicao: Int, view: View?, parent: ViewGroup?): View {
         val newView = LayoutInflater.from(context).inflate(R.layout.transacao_item, parent, false)
 
-        if (transacoes[posicao].tipo == Tipo.RECEITA) {
+        if (transacoes[posicao].tipo == "RECEITA") {
             newView.transacao_valor.setTextColor(ContextCompat.getColor(context, R.color.receita))
             newView.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_receita)
         } else {
@@ -31,14 +32,14 @@ class ListaTransacoesAdapter(val transacoes: List<Transacao>,
             newView.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_despesa)
         }
 
-        newView.transacao_valor.text = transacoes[posicao].valor.formataMoeda()
+        newView.transacao_valor.text = transacoes[posicao].valor
         newView.transacao_categoria.text = transacoes[posicao].categoria.limitaEmAte(limiteCharCategoria)
-        newView.transacao_data.text = transacoes[posicao].data.formataData()
+        newView.transacao_data.text = transacoes[posicao].data
 
         return newView
     }
 
-    override fun getItem(posicao: Int): Transacao {
+    override fun getItem(posicao: Int): TransacaoEntity {
         return transacoes[posicao]
     }
 

@@ -11,9 +11,6 @@ interface TransacaoDAO {
     @Query("select * from transacao")
     fun getAllTransacoes(): Flowable<List<TransacaoEntity>>
 
-    @Query("select count(*) from transacao")
-    fun getTotalTransacao(): Flowable<Int>
-
     @Insert(onConflict = REPLACE)
     fun insertTransacao(transacaoEntity: TransacaoEntity)
 
@@ -24,6 +21,6 @@ interface TransacaoDAO {
     fun updateTransacao(transacaoEntity: TransacaoEntity)
 
     @Delete
-    fun deleteTransacao(idTransacao: Long)
+    fun deleteTransacao(transacaoEntity: TransacaoEntity)
 
 }

@@ -12,11 +12,7 @@ import java.util.*
 
 @Entity(tableName = "transacao")
 data class TransacaoEntity(@PrimaryKey(autoGenerate = true) var idTransacao: Long = 0,
-        @ColumnInfo(name = "valor") var valor: String,
-        @ColumnInfo(name = "tipo") var tipo: String,
-        @ColumnInfo(name = "categoria") var categoria: String,
-        @ColumnInfo(name = "data") var data: String) {
-
-        constructor() : this(0, "", "", "", Calendar.getInstance().formataData())
-
-}
+                           @ColumnInfo(name = "valor") var valor: String = "",
+                           @ColumnInfo(name = "tipo") var tipo: String = "",
+                           @ColumnInfo(name = "categoria") var categoria: String = "",
+                           @ColumnInfo(name = "data") var data: String = Calendar.getInstance().formataData())
